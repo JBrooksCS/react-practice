@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import LocationItem from './LocationItem'
 
 
 class LocationList extends Component {
@@ -6,11 +7,11 @@ class LocationList extends Component {
         return (
             <section className="locations">
             {
-                this.props.locations.map(location =>
-                    <div key={location.id}>
-                        {location.name}
-                    </div>
-                )
+                this.props.locations.map((item) => {
+
+                    return <LocationItem key={item.id} location={item}
+                    deleteLocation={this.props.deleteLocation} />
+                    })
             }
             </section>
         )

@@ -1,62 +1,97 @@
 import { Route } from 'react-router-dom'
 import React, { Component } from "react"
+
 import AnimalList from './animal/AnimalList'
 import LocationList from './location/LocationList'
 import EmployeeList from './employee/EmployeeList'
 import OwnerList from './owners/OwnerList'
 
+import AnimalManager from "../modules/AnimalManager"
+import LocationManager from "../modules/LocationManager"
+import EmployeeManager from "../modules/EmployeeManager"
+import OwnerManager from "../modules/OwnerManager"
+
 
 class ApplicationViews extends Component {
-    employeesFromAPI = [
-        { id: 1, name: "Jessica Younker" },
-        { id: 2, name: "Jordan Nelson" },
-        { id: 3, name: "Zoe LeBlanc" },
-        { id: 4, name: "Blaise Roberts" }
-    ]
-
-    locationsFromAPI = [
-        { id: 1, name: "Nashville North", address: "500 Circle Way" },
-        { id: 2, name: "Nashville South", address: "10101 Binary Court" }
-    ]
-
-    animalsFromAPI = [
-        { id: 1, name: "Doodles" },
-        { id: 2, name: "Jack" },
-        { id: 3, name: "Angus" },
-        { id: 4, name: "Henley" },
-        { id: 5, name: "Derkins" },
-        { id: 6, name: "Checkers" }
-    ]
-    ownersFromAPI = [
-        {id: 1, phoneNumber: "555-5555", name: "John"},
-        {id: 2, phoneNumber: "444-4444", name: "Melissa"},
-        {id: 3, phoneNumber: "333-3333", name: "Stu"},
-        {id: 4, phoneNumber: "777-5555", name: "Franz"}
-    ]
 
     state = {
-        employees: this.employeesFromAPI,
-        locations: this.locationsFromAPI,
-        animals: this.animalsFromAPI,
-        owners: this.ownersFromAPI
+        employees: [],
+        locations: [],
+        animals: [],
+        owners: []
     }
-
+    deleteAnimal = (id) => {
+        const newState = {};
+        AnimalManager.deleteAnimal(id)
+            .then(() => AnimalManager.getAll()
+                .then(animals => {
+                    console.log("animals", animals);
+                    newState.animals = animals
+                })) //her notes have })
+            .then(() => this.setState(newState))
+    }
+    deleteEmployee = (id) => {
+        const newState = {};
+        EmployeeManager.deleteEmployee(id)
+            .then(() => EmployeeManager.getAll()
+                .then(employees => {
+                    console.log("employees", employees);
+                    newState.employees = employees
+                })) //her notes have })
+            .then(() => this.setState(newState))
+    }
+    deleteLocation = (id) => {
+        const newState = {};
+        LocationManager.deleteLocation(id)
+            .then(() => LocationManager.getAll()
+                .then(locations => {
+                    console.log("locations", locations);
+                    newState.locations = locations
+                })) //her notes have })
+            .then(() => this.setState(newState))
+    }
+    deleteOwner = (id) => {
+        const newState = {};
+        OwnerManager.deleteOwner(id)
+            .then(() => OwnerManager.getAll()
+                .then(owners => {
+                    console.log("owners", owners);
+                    newState.owners = owners
+                })) //her notes have })
+            .then(() => this.setState(newState))
+    }
+    componentDidMount() {
+        const newState = {};
+        AnimalManager.getAll()
+            .then(allAnimals => { newState.animals = allAnimals })
+            .then(_next => LocationManager.getAll())
+            .then(allLocations => { newState.locations = allLocations })
+            .then(_next => EmployeeManager.getAll())
+            .then(allEmployees => { newState.employees = allEmployees })
+            .then(_next => OwnerManager.getAll())
+            .then(allOwners => { newState.owners = allOwners })
+            .then(_next => { this.setState(newState) })
+    }
     render() {
         return (
-            <React.Fragment>
+            <React.Fragment >
                 <Route exact path="/" render={(props) => {
-                    return <LocationList locations={this.state.locations} />
+                    return <LocationList locations={this.state.locations}
+                    deleteLocation={this.deleteLocation} />
                 }} />
                 <Route path="/animals" render={(props) => {
-                    return <AnimalList animals={this.state.animals} />
+                    return <AnimalList animals={this.state.animals}
+                        deleteAnimal={this.deleteAnimal} />
                 }} />
                 <Route path="/employees" render={(props) => {
-                    return <EmployeeList employees={this.state.employees} />
+                    return <EmployeeList employees={this.state.employees}
+                    deleteEmployee={this.deleteEmployee} />
                 }} />
                 <Route path="/owners" render={(props) => {
-                    return <OwnerList owners={this.state.owners} />
+                    return <OwnerList owners={this.state.owners}
+                    deleteOwner={this.deleteOwner} />
                 }} />
-            </React.Fragment>
+            </React.Fragment >
         )
     }
 }
