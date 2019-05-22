@@ -1,3 +1,7 @@
+html{
+    background-color: rgb(230, 113, 113);
+}
+
 .animals {
     display: flex;
     justify-content: space-evenly;
@@ -19,16 +23,38 @@
     height: 50px;
 }
 .icon--person {
-    width: 80px;
+    width: 70px;
     height: 50px;
 }
+.icon--owner {
+    width: 100px;
+    height: 80px;
+}
+.icon--head {
+    width: 80px;
+    height: 80px;
+}
+.icon--building {
+    width: 80px;
+    height: 80px;
+}
+.animal--btn{
+    margin-top: .8em;
+}
+
 .card {
-    width: 10rem;
+    margin-top: .8em;
     background-color: rgb(135, 208, 236);
+    min-width: 160px;
+
+
 }
 section {
     display: flex;
-    align-items: stretch;
+    justify-content: flex-start;
+    flex-direction: row;
+    flex-wrap: wrap;
+    background-color: rgb(230, 113, 113);
 }
 .card-title {
     display: flex;
@@ -36,7 +62,13 @@ section {
     align-items: center;
     flex-direction: column;
 }
-.card-link {
-    margin: 12px 0 0 0;
-    font-size: 0.7em;
+.card-link{
+    margin-top: .5em;
 }
+
+@media only screen and (max-width: 600px) {
+    .card {
+      display: block;
+      width: 100%;
+    }
+  }

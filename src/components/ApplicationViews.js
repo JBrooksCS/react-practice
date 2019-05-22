@@ -1,4 +1,5 @@
 import { Route } from 'react-router-dom'
+import { withRouter } from 'react-router'
 import React, { Component } from "react"
 
 import AnimalList from './animal/AnimalList'
@@ -10,6 +11,9 @@ import AnimalManager from "../modules/AnimalManager"
 import LocationManager from "../modules/LocationManager"
 import EmployeeManager from "../modules/EmployeeManager"
 import OwnerManager from "../modules/OwnerManager"
+
+import AnimalDetail from "./animal/AnimalDetail"
+import AnimalForm from "./animal/AnimalForm"
 
 
 class ApplicationViews extends Component {
@@ -28,8 +32,19 @@ class ApplicationViews extends Component {
                     console.log("animals", animals);
                     newState.animals = animals
                 })) //her notes have })
-            .then(() => this.setState(newState))
+            .then(() => {
+                this.props.history.push("/animals")
+                this.setState(newState)
+            })
     }
+    addAnimal = (animal) =>
+        AnimalManager.post(animal)
+            .then(() => AnimalManager.getAll())
+            .then(animals =>
+                this.setState({
+                    animals: animals
+                })
+            );
     deleteEmployee = (id) => {
         const newState = {};
         EmployeeManager.deleteEmployee(id)
@@ -77,23 +92,44 @@ class ApplicationViews extends Component {
             <React.Fragment >
                 <Route exact path="/" render={(props) => {
                     return <LocationList locations={this.state.locations}
-                    deleteLocation={this.deleteLocation} />
+                        deleteLocation={this.deleteLocation} />
                 }} />
-                <Route path="/animals" render={(props) => {
-                    return <AnimalList animals={this.state.animals}
+                <Route exact path="/animals" render={(props) => {
+                    return <AnimalList {...props} animals={this.state.animals}
                         deleteAnimal={this.deleteAnimal} />
                 }} />
+                <Route path="/animals/:animalId(\d+)" render={(props) => {
+                    // Find the animal with the id of the route parameter
+                    let animal = this.state.animals.find(animal =>
+                        animal.id === parseInt(props.match.params.animalId)
+                    )
+
+                    // If the animal wasn't found, create a default one
+                    if (!animal) {
+                        animal = { id: 404, name: "404", breed: "Dog not found" }
+                    }
+
+                    return <AnimalDetail animal={animal}
+                        deleteAnimal={this.deleteAnimal} />
+                }} />
+
+                <Route path="/animals/new" render={(props) => {
+                    return <AnimalForm {...props}
+                        addAnimal={this.addAnimal}
+                        employees={this.state.employees} />
+                }} />
+
                 <Route path="/employees" render={(props) => {
                     return <EmployeeList employees={this.state.employees}
-                    deleteEmployee={this.deleteEmployee} />
+                        deleteEmployee={this.deleteEmployee} />
                 }} />
                 <Route path="/owners" render={(props) => {
                     return <OwnerList owners={this.state.owners}
-                    deleteOwner={this.deleteOwner} />
+                        deleteOwner={this.deleteOwner} />
                 }} />
             </React.Fragment >
         )
     }
 }
-
-export default ApplicationViews
+//this includes the withRouter so we can use .push for history
+export default withRouter(ApplicationViews)
