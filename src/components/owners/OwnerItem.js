@@ -10,8 +10,14 @@ class OwnerItem extends Component {
     render() {
         return (
             <article>
-                <h3>{this.props.owner.name}</h3>
-                <button onClick={this.handleClick}>Delete</button>
+                <div className="card">
+                    <div className="card-body">
+                        <h5 className="card-title">
+                            {this.props.owner.name}
+                            <button onClick={this.handleClick}>Delete</button>
+                        </h5>
+                    </div>
+                </div>
             </article>
         )
     }

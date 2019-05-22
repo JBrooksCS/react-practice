@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import person from './person_icon.png'
 
 class EmployeeItem extends Component {
 
@@ -10,8 +11,15 @@ class EmployeeItem extends Component {
     render() {
         return (
             <article>
-                <h3>{this.props.employee.name}</h3>
-                <button onClick={this.handleClick}>Delete</button>
+                <div className="card">
+                    <div className="card-body">
+                    <img src={person} className="icon--person" />
+                        <h5 className="card-title">
+                            {this.props.employee.name}
+                            <button onClick={this.handleClick}>Delete</button>
+                        </h5>
+                    </div>
+                </div>
             </article>
         )
     }

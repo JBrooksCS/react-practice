@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import dog from "./DogIcon.svg"
+import "./Animal.css"
 
 class AnimalItem extends Component {
 
@@ -10,8 +12,15 @@ class AnimalItem extends Component {
     render() {
         return (
             <article>
-                <h3>{this.props.animal.name}</h3>
-                <button onClick={this.handleClick}>Delete</button>
+                <div className="card">
+                    <div className="card-body">
+                        <h5 className="card-title">
+                            <img src={dog} className="icon--dog" />
+                            {this.props.animal.name}
+                            <button onClick={this.handleClick} className="card-link">Delete</button>
+                        </h5>
+                    </div>
+                </div>
             </article>
         )
     }
