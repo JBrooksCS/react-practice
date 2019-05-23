@@ -5,14 +5,14 @@ import { Link } from "react-router-dom";
 
 class AnimalItem extends Component {
 
-state = {
-    saveDisabled: false
-}
+    state = {
+        saveDisabled: false
+    }
 
     handleClick = (event) => {
         console.log("click", event, this.props.animal.id)
         this.setState({
-            saveDisabled:true
+            saveDisabled: true
         })
         this.props.deleteAnimal(this.props.animal.id)
     }
@@ -22,10 +22,11 @@ state = {
                 <div className="card">
                     <div className="card-body">
                         <h5 className="card-title">
-                        <img alt="" src={ dog } className="icon--dog" />
+                            <img alt="" src={dog} className="icon--dog" />
                             {this.props.animal.name}
-                            <Link className="nav-link" to={`/animals/${this.props.animal.id}`}>Details</Link>
+                            <Link className="nav-link" to={`/animals/${this.props.animal.id}`}>View Details</Link>
                             <button onClick={this.handleClick} disabled={this.state.saveDisabled} className="card-link">Delete</button>
+                            <button type="button" className="card-link" onClick={() => { this.props.history.push(`/animals/${this.props.animal.id}/edit`);}}>Edit</button>
                         </h5>
                     </div>
                 </div>

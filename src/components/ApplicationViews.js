@@ -14,6 +14,7 @@ import OwnerManager from "../modules/OwnerManager"
 
 import AnimalDetail from "./animal/AnimalDetail"
 import AnimalForm from "./animal/AnimalForm"
+import AnimalEditForm from "./animal/AnimalEditForm"
 
 
 class ApplicationViews extends Component {
@@ -45,6 +46,17 @@ class ApplicationViews extends Component {
                     animals: animals
                 })
             );
+    updateAnimal = (editedAnimalObject) => {
+        return AnimalManager.put(editedAnimalObject)
+            .then(() => AnimalManager.getAll())
+            .then(animals => {
+                //push goes here to keep from rendering page twice
+                this.props.history.push("/animals")
+                this.setState({
+                    animals: animals
+                })
+            })
+    };
     deleteEmployee = (id) => {
         const newState = {};
         EmployeeManager.deleteEmployee(id)
@@ -98,7 +110,7 @@ class ApplicationViews extends Component {
                     return <AnimalList {...props} animals={this.state.animals}
                         deleteAnimal={this.deleteAnimal} />
                 }} />
-                <Route path="/animals/:animalId(\d+)" render={(props) => {
+                <Route exact path="/animals/:animalId(\d+)" render={(props) => {
                     // Find the animal with the id of the route parameter
                     let animal = this.state.animals.find(animal =>
                         animal.id === parseInt(props.match.params.animalId)
@@ -112,6 +124,11 @@ class ApplicationViews extends Component {
                     return <AnimalDetail animal={animal}
                         deleteAnimal={this.deleteAnimal} />
                 }} />
+
+                <Route path="/animals/:animalId(\d+)/edit" render={props => {
+                    return <AnimalEditForm {...props} employees={this.state.employees} updateAnimal={this.updateAnimal} />
+                }}
+                />
 
                 <Route path="/animals/new" render={(props) => {
                     return <AnimalForm {...props}

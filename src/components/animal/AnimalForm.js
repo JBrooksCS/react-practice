@@ -38,6 +38,7 @@ export default class AnimalForm extends Component {
     };
 
     render() {
+        console.log("ANIMAL FORM Render")
         return (
             <React.Fragment>
                 <form className="animalForm">

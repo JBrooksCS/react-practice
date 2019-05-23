@@ -5,6 +5,7 @@ import dog from "./DogIcon.svg"
 
 class AnimalList extends Component {
     render() {
+        console.log("ANIMAL LIST Render")
         return (
             <section className="animals">
                 <div className="card">
@@ -25,7 +26,7 @@ class AnimalList extends Component {
                 {
                     this.props.animals.map((item) => {
 
-                        return <AnimalItem key={item.id} animal={item} deleteAnimal={this.props.deleteAnimal} />
+                        return <AnimalItem {...this.props} key={item.id} animal={item} deleteAnimal={this.props.deleteAnimal} />
                     })
                 }
             </section>
